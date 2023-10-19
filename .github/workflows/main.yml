@@ -8,7 +8,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       - name: Checkout code
@@ -21,7 +21,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd flask-app
           pip install -r requirements.txt
         
 
