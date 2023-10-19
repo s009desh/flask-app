@@ -28,5 +28,5 @@ jobs:
           context: .
           dockerfile: Dockerfile
           push: true
-          tags: s009/flask-app-demo:latest
+          tags:  ${{ secrets.DOCKERHUB_USERNAME}}/flask-app-demo:latest
 
