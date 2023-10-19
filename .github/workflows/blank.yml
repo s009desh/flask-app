@@ -33,4 +33,5 @@ jobs:
       - name: Run Python script
         run: |
           nohup python3 hello.py 
+          pkill -f "python3 hello.py"
 
