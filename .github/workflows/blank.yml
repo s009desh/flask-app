@@ -32,6 +32,6 @@ jobs:
 
       - name: Run Python script
         run: |
-          python3 hello.py 
-          pkill -f "python3 hello.py"
+          nohup python3 hello.py > script_output.log 2>&1 &
+         
 
