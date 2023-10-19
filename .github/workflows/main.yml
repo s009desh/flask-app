@@ -8,23 +8,27 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          ref: master
 
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
 
+      - name: Checking the directory
+        run:
+          ls
+
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-        
-
       - name: Run Python script
         run: |
-          python3 hello.py
+          nohup python3 hello.py > script_output.log 2>&1 &
         
