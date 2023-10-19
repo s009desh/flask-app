@@ -1,37 +1,36 @@
 name: CI
 
-# Controls when the workflow will run
 on:
-  push:
-    branches:
-      - master
-  workflow_dispatch:
+  workflow_run:
+    workflows: ["Pythonflask app"]
+    types:
+      - completed
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+  build-and-push-docker:
+    runs-on: ubuntu-20.04
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-          ref: master
+          ref: master  # Specify the branch where your Docker files are
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Checking the directory
-        run:
-          ls
-
-      - name: Install dependencies
+      - name: Build and tag Docker image
+        id: build
         run: |
-          pip install -r requirements.txt
+          docker build -t flask-app-demo:latest .
+          echo "::set-output name=tag::latest"
+        shell: bash
 
-      - name: Run Python script
+      - name: Push Docker image
+        if: ${{ job.status == 'success' }}
         run: |
-          nohup python3 hello.py > script_output.log 2>&1 &
+          docker tag flask-app-demo:${{ steps.build.outputs.tag }} flask-app-demo:latest
+          docker push flask-app-demo:latest
+        shell: bash
          
 
