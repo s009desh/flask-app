@@ -28,4 +28,4 @@ jobs:
           context: .
           dockerfile: Dockerfile
           push: true
-          tags: user/app:latest
+          tags: s009/flask-app:latest
